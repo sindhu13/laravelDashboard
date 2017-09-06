@@ -1,0 +1,571 @@
+-- phpMyAdmin SQL Dump
+-- version 4.4.12
+-- httpwww.phpmyadmin.net
+--
+-- Host 127.0.0.1
+-- Generation Time Aug 30, 2017 at 0506 AM
+-- Server version 5.6.25
+-- PHP Version 5.6.11
+
+SET SQL_MODE = NO_AUTO_VALUE_ON_ZERO;
+SET time_zone = +0000;
+
+--
+-- Database `stock_online`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `colors`
+--
+
+CREATE TABLE IF NOT EXISTS `colors` (
+  `id` int(11) unsigned NOT NULL,
+  `color` varchar(225) DEFAULT NULL,
+  `code` varchar(10) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `colors`
+--
+
+INSERT INTO `colors` (`id`, `color`, `code`, `created_at`, `updated_at`) VALUES
+(1, 'WHITE', 'W09', '2017-08-22 035010', '2017-08-22 035010'),
+(2, 'SUPER WHITE II', '040', '2017-08-22 035039', '2017-08-22 035039'),
+(3, 'SILVER METALLIC', '1E7', '2017-08-22 035108', '2017-08-22 035108');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `leasings`
+--
+
+CREATE TABLE IF NOT EXISTS `leasings` (
+  `id` int(11) unsigned NOT NULL,
+  `leasing` varchar(225) DEFAULT NULL,
+  `address` text NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `leasings`
+--
+
+INSERT INTO `leasings` (`id`, `leasing`, `address`, `phone`, `created_at`, `updated_at`) VALUES
+(1, 'OTO', 'Bandung', '1234567', '2017-08-22 040300', '2017-08-22 040300'),
+(2, 'BCA FINANCE', 'Bandung', '12345676', '2017-08-24 033842', '2017-08-24 034912');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `locations`
+--
+
+CREATE TABLE IF NOT EXISTS `locations` (
+  `id` int(11) unsigned NOT NULL,
+  `location` varchar(225) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`id`, `location`, `created_at`, `updated_at`) VALUES
+(1, 'PDC CIBITUNG', '2017-08-19 052034', '2017-08-19 052034');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` int(10) unsigned NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2014_10_12_000000_create_users_table', 1),
+(2, '2014_10_12_100000_create_password_resets_table', 1),
+(3, '2017_08_23_023334_create_permission_tables', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE IF NOT EXISTS `password_resets` (
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `permissions`
+--
+
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` int(10) unsigned NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Edit Leasing', '2017-08-22 212036', '2017-08-22 212036'),
+(2, 'Create Leasing', '2017-08-22 212050', '2017-08-22 212050'),
+(3, 'Delete Leasing', '2017-08-22 212102', '2017-08-22 212102'),
+(4, 'Administer roles & permissions', '2017-08-22 212122', '2017-08-22 212122'),
+(5, 'Create Seller', '2017-08-24 004326', '2017-08-24 004341'),
+(6, 'Edit Seller', '2017-08-24 004356', '2017-08-24 004356'),
+(7, 'Delete Seller', '2017-08-24 004407', '2017-08-24 004407');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `positions`
+--
+
+CREATE TABLE IF NOT EXISTS `positions` (
+  `id` int(11) unsigned NOT NULL,
+  `position` varchar(190) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `positions`
+--
+
+INSERT INTO `positions` (`id`, `position`, `created_at`, `updated_at`) VALUES
+(1, 'UNIT CABANG', '2017-08-18 094237', '2017-08-18 094237'),
+(2, 'DISPLAY LEMBANG', '2017-08-19 025324', '2017-08-19 025324'),
+(3, 'UNIT HO', '2017-08-19 025334', '2017-08-19 025334');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(10) unsigned NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', '2017-08-22 212248', '2017-08-22 212248'),
+(2, 'Owner', '2017-08-22 212300', '2017-08-22 212300'),
+(3, 'Editor', '2017-08-23 194333', '2017-08-23 194333'),
+(4, 'Supervisor', '2017-08-24 010525', '2017-08-24 010525');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_has_permissions`
+--
+
+CREATE TABLE IF NOT EXISTS `role_has_permissions` (
+  `permission_id` int(10) unsigned NOT NULL,
+  `role_id` int(10) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `role_has_permissions`
+--
+
+INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1),
+(1, 2),
+(2, 2),
+(3, 2),
+(1, 3),
+(2, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sellers`
+--
+
+CREATE TABLE IF NOT EXISTS `sellers` (
+  `id` int(11) unsigned NOT NULL,
+  `name` varchar(225) NOT NULL,
+  `address` text NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `position` varchar(50) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sellers`
+--
+
+INSERT INTO `sellers` (`id`, `name`, `address`, `phone`, `position`, `created_at`, `updated_at`) VALUES
+(1, 'Roby N', 'Bandung', '1234567', 'SE', '2017-08-24 071655', '2017-08-24 072113');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stocks`
+--
+
+CREATE TABLE IF NOT EXISTS `stocks` (
+  `id` int(11) unsigned NOT NULL,
+  `po_number` varchar(100) NOT NULL,
+  `po_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `po_csi` varchar(100) NOT NULL,
+  `location_id` int(11) NOT NULL,
+  `vendor_id` int(11) NOT NULL,
+  `unit_id` int(11) NOT NULL,
+  `chassis` varchar(50) NOT NULL,
+  `engine` varchar(50) NOT NULL,
+  `color_id` int(11) NOT NULL,
+  `year` varchar(5) NOT NULL,
+  `position_id` int(11) NOT NULL,
+  `alocation_id` int(11) NOT NULL,
+  `alocation_day` varchar(15) NOT NULL,
+  `alocation_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `seller_id` int(11) NOT NULL,
+  `consumer` varchar(225) NOT NULL,
+  `leasing_id` int(11) NOT NULL,
+  `last_pos` varchar(20) NOT NULL,
+  `last_pos_ho_less` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_pos_ho_greater` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `units`
+--
+
+CREATE TABLE IF NOT EXISTS `units` (
+  `id` int(10) unsigned NOT NULL,
+  `unit` varchar(225) DEFAULT NULL,
+  `katashiki` varchar(50) DEFAULT NULL,
+  `suffix` varchar(5) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `units`
+--
+
+INSERT INTO `units` (`id`, `unit`, `katashiki`, `suffix`, `created_at`, `updated_at`) VALUES
+(1, 'ALL NEW FORTUNER 2.4 VRZ 4X2 AT Diesel', '-', '00', '2017-08-22 033907', '2017-08-22 033907'),
+(2, 'CALYA 1.2 G AT', '-', '00', '2017-08-22 034030', '2017-08-22 034030');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) unsigned NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'sindhu', 'bondan@merdekamotor.com', '$2y$10$EMjqz.IsjeJ07hNKdpFDAeMwQxDOfjnkduRWM9HPo.3Xzlz1pz5q', 'RYy2PWLKpWrbP2HJGJQtETDuYPfGRHRiUY9mgtUy5xNdvtPVDtug4hodj67A', '2017-08-22 211846', '2017-08-22 212324'),
+(2, 'Sana Edi M', 'edi@merdekamotor.com', '$2y$10$SZGdQ9cHr6aQ2Rx2bTzrruaOfR0ID9sn0gMCVH9nmORObCX3ZoDsa', NULL, '2017-08-24 010447', '2017-08-24 010543');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_has_permissions`
+--
+
+CREATE TABLE IF NOT EXISTS `user_has_permissions` (
+  `user_id` int(10) unsigned NOT NULL,
+  `permission_id` int(10) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_has_roles`
+--
+
+CREATE TABLE IF NOT EXISTS `user_has_roles` (
+  `role_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_has_roles`
+--
+
+INSERT INTO `user_has_roles` (`role_id`, `user_id`) VALUES
+(1, 1),
+(4, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendors`
+--
+
+CREATE TABLE IF NOT EXISTS `vendors` (
+  `id` int(11) unsigned NOT NULL,
+  `vendor` varchar(225) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `vendors`
+--
+
+INSERT INTO `vendors` (`id`, `vendor`, `created_at`, `updated_at`) VALUES
+(1, 'TAM', '2017-08-22 031230', '2017-08-22 031230'),
+(2, 'MITRADEKA NUSANTARA', '2017-08-22 031350', '2017-08-22 031350');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `colors`
+--
+ALTER TABLE `colors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `leasings`
+--
+ALTER TABLE `leasings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indexes for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `permissions_name_unique` (`name`);
+
+--
+-- Indexes for table `positions`
+--
+ALTER TABLE `positions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `position` (`position`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `roles_name_unique` (`name`);
+
+--
+-- Indexes for table `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`role_id`),
+  ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
+
+--
+-- Indexes for table `sellers`
+--
+ALTER TABLE `sellers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stocks`
+--
+ALTER TABLE `stocks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location_id` (`location_id`),
+  ADD KEY `vendor_id` (`vendor_id`),
+  ADD KEY `unit_id` (`unit_id`),
+  ADD KEY `color_id` (`color_id`),
+  ADD KEY `position_id` (`position_id`),
+  ADD KEY `alocation_id` (`alocation_id`),
+  ADD KEY `seller_id` (`seller_id`),
+  ADD KEY `leasing_id` (`leasing_id`);
+
+--
+-- Indexes for table `units`
+--
+ALTER TABLE `units`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Indexes for table `user_has_permissions`
+--
+ALTER TABLE `user_has_permissions`
+  ADD PRIMARY KEY (`user_id`,`permission_id`),
+  ADD KEY `user_has_permissions_permission_id_foreign` (`permission_id`);
+
+--
+-- Indexes for table `user_has_roles`
+--
+ALTER TABLE `user_has_roles`
+  ADD PRIMARY KEY (`role_id`,`user_id`),
+  ADD KEY `user_has_roles_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `vendors`
+--
+ALTER TABLE `vendors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `colors`
+--
+ALTER TABLE `colors`
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `leasings`
+--
+ALTER TABLE `leasings`
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `positions`
+--
+ALTER TABLE `positions`
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `sellers`
+--
+ALTER TABLE `sellers`
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `stocks`
+--
+ALTER TABLE `stocks`
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `units`
+--
+ALTER TABLE `units`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `vendors`
+--
+ALTER TABLE `vendors`
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_has_permissions`
+--
+ALTER TABLE `user_has_permissions`
+  ADD CONSTRAINT `user_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_has_permissions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_has_roles`
+--
+ALTER TABLE `user_has_roles`
+  ADD CONSTRAINT `user_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_has_roles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
