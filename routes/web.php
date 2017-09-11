@@ -14,10 +14,21 @@
 //    return view('home');
 //})->middleware('auth');
 
-Route::get('/', function () {
-    return view('home');
-});
+//Route::get('/', function () {
+//    return view('home');
+//});
 Route::get('/', 'HomeController@home');
+Route::get('/home', 'HomeController@home');
+Route::get('/homeIframe', 'HomeController@homeIframe');
+Route::get('/do/', 'HomeController@homeDo');
+Route::get('/doIframe/', 'HomeController@doIframe');
+Route::get('/supply/', 'HomeController@homeSupply');
+Route::get('/supplyIframe/', 'HomeController@supplyIframe');
+Route::get('/barter/', 'HomeController@homeBarter');
+Route::get('/barterIframe/', 'HomeController@barterIframe');
+
+//Route::get('/stocks/dos', 'StocksController@dos');
+Route::get('/stocks/dos', ['as' => 'stocks.dos', 'uses' => 'StocksController@dos']);
 
 Auth::routes();
 
@@ -43,8 +54,11 @@ Route::resource('employees', 'EmployeesController');
 
 Route::resource('stocks', 'StocksController');
 
+
 Route::resource('marketingGroups', 'MarketingGroupsController');
 Route::get('/marketingGroups/{id}', 'MarketingGroupsController@index');
 
 Route::resource('userHasSellers', 'UserHasSellersController');
 Route::get('/userHasSellers/create/{id}', ['uses' => 'UserHasSellersController@create']);
+
+Route::resource('unitModels', 'UnitModelsController');

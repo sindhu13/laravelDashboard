@@ -86,7 +86,6 @@ class UserHasSellersController extends Controller
 
     public function update(Request $request, $id) {
       $this->validate($request, [
-            'employee_id' => 'required',
             'begin_work' => 'required',
       ]);
 

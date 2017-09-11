@@ -1,15 +1,13 @@
 {{-- \resources\views\stocks\index.blade.php --}}
-@extends('layouts.app')
+@extends('layouts.appIframe')
 
-@section('title', '| Stocks')
+@section('title', '| HOME')
 
 @section('content')
-{{-- dd($stocks) --}}
+{{-- dd($ts) --}}
 
-<div class="col-lg-10 col-lg-offset-1">
-  <h1><i class="fa fa-users"></i> Stocks <a href="{{ route('stocks.create') }}" class="btn btn-default pull-right">Add Stocks</a></h1>
-  <hr>
-  <div class="table-responsive">
+<div class="">
+  <div class="">
       <table class="table table-bordered table-striped">
 
           <thead>
@@ -32,7 +30,7 @@
                 <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Terakhir</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Akhir HO</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Akhir HO</th>
-                <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 200px">Operation</th>
+                <th style="text-align:center; vertical-align:middle; min-width: 150px">Status</th>
               </tr>
               <tr>
                 <th style="text-align:center; vertical-align:middle; min-width: 200px">No</th>
@@ -72,14 +70,7 @@
                 <td>{{ $stock->last_pos }}</td>
                 <td>{{ !isset($stock->last_pos_ho_less) ? '' : date('d m Y', strtotime($stock->last_pos_ho_less)) }}</td>
                 <td>{{ !isset($stock->last_pos_ho_greater) ? '' : date('d m Y', strtotime($stock->last_pos_ho_greater)) }}</td>
-                <td>
-                <a href="{{ route('stocks.edit', $stock->id) }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
-
-                {!! Form::open(['method' => 'DELETE', 'route' => ['stocks.destroy', $stock->id], 'class' => 'delete' ]) !!}
-                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                {!! Form::close() !!}
-
-                </td>
+                <td>{{ $stock->status }}</td>
               </tr>
               @endforeach
           </tbody>
@@ -89,5 +80,5 @@
       </div>
   </div>
 </div>
-{{--dd($stocks)--}}
+{{--dd($ts)--}}
 @endsection

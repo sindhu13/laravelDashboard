@@ -77,7 +77,7 @@
       <div class="form-group">
         {{Form::label('seller_id', 'Seller')}}
         <select name="seller_id" class="form-control">
-        <option selected="selected" disabled="disabled" hidden="hidden" value="">Enter Color</option>
+        <option selected="selected" disabled="disabled" hidden="hidden" value="">Enter Seller</option>
         @foreach($marketings as $marketing)
           <optgroup label="{{ $marketing->name}}">
             @foreach($userHasSellers as $userHasSeller)
@@ -91,11 +91,15 @@
       </div>
       <div class="form-group">
         {{Form::label('consumer', 'Customer')}}
-        {{Form::text('consumer', '', ['class' => 'form-control', 'placeholder' => 'Enter PO Customer'])}}
+        {{Form::text('consumer', '', ['class' => 'form-control', 'placeholder' => 'Enter Customer'])}}
       </div>
       <div class="form-group">
         {{Form::label('leasing_id', 'Leasing')}}
         {{Form::select('leasing_id', $leasings, '', ['class' => 'form-control', 'placeholder' => 'Enter Leasing'])}}
+      </div>
+      <div class="form-group">
+        {{Form::label('status_id', 'Status')}}
+        {{Form::select('status_id', $status, '', ['class' => 'form-control', 'placeholder' => 'Enter Status'])}}
       </div>
       {{Form::submit('Add', ['class' => 'btn btn-primary'])}}
       <a class="btn btn-primary" href="{{ route('stocks.index') }}">Cancel</a>

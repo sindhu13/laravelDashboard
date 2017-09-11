@@ -9,6 +9,10 @@
     <div class="panel-body">
       {!! Form::open(array('url' => 'units')) !!}
       <div class="form-group">
+        {{Form::label('unit_model_id', 'Unit Model')}}
+        {{Form::select('unit_model_id', $models, '', ['class' => 'form-control', 'placeholder' => 'Enter Unit Model'])}}
+      </div>
+      <div class="form-group">
         {{Form::label('unit', 'Unit')}}
         {{Form::text('unit', '', ['class' => 'form-control', 'placeholder' => 'Enter Unit'])}}
       </div>

@@ -10,6 +10,10 @@
 
     {{ Form::model($unit, array('route' => array('units.update', $unit->id), 'method' => 'PUT')) }}
     <div class="form-group">
+        {{Form::label('unit_model_id', 'Unit Model')}}
+        {{Form::select('unit_model_id', $models, null, ['class' => 'form-control', 'placeholder' => 'Enter Unit Model'])}}
+      </div>
+    <div class="form-group">
       {{Form::label('unit', 'Unit')}}
       {{Form::text('unit', null, ['class' => 'form-control', 'placeholder' => 'Enter Unit'])}}
     </div>

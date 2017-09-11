@@ -105,11 +105,19 @@
       </div>
       <div class="form-group">
         {{Form::label('consumer', 'Customer')}}
-        {{Form::text('consumer', null, ['class' => 'form-control', 'placeholder' => 'Enter PO Customer'])}}
+        {{Form::text('consumer', null, ['class' => 'form-control', 'placeholder' => 'Enter Customer'])}}
       </div>
       <div class="form-group">
         {{Form::label('leasing_id', 'Leasing')}}
         {{Form::select('leasing_id', $leasings, null, ['class' => 'form-control', 'placeholder' => 'Enter Leasing'])}}
+      </div>
+      <div class="form-group">
+        {{Form::label('last_status_id', 'Status')}}
+        {{Form::select('last_status_id', $status, '', ['class' => 'form-control', 'placeholder' => 'Enter Status'])}}
+      </div>
+      <div class="form-group">
+        {{Form::label('status_date', 'Status Date')}}
+        {{Form::text('status_date', '', ['class' => 'form-control', 'placeholder' => 'Enter Status Date'])}}
       </div>
     {{ Form::submit('Save', array('class' => 'btn btn-primary')) }}
     {{ Form::close() }}

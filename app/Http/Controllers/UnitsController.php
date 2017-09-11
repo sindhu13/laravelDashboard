@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Unit;
+use App\UnitModel;
 
 class UnitsController extends Controller
 {
@@ -34,12 +35,14 @@ class UnitsController extends Controller
   public function store(Request $request)
   {
       $this->validate($request, [
+        'unit_model_id' => 'required',
         'unit' => 'required',
         'katashiki' => 'required',
         'suffix' => 'required',
       ]);
 
       $message = new unit;
+      $message->unit_model_id = $request->input('unit_model_id');
       $message->unit = $request->input('unit');
       $message->katashiki = $request->input('katashiki');
       $message->suffix = $request->input('suffix');
@@ -52,7 +55,8 @@ class UnitsController extends Controller
   }
 
   public function create(){
-    return view('units.create');
+    $models = UnitModel::pluck('name', 'id');
+    return view('units.create', compact('models'));
   }
 
   public function show($id) {
@@ -62,17 +66,20 @@ class UnitsController extends Controller
 
   public function edit($id) {
     $unit = Unit::findOrFail($id);
-    return view('units.edit', compact('unit'));
+    $models = UnitModel::pluck('name', 'id');
+    return view('units.edit', compact('unit', 'models'));
   }
 
   public function update(Request $request, $id) {
     $this->validate($request, [
+      'unit_model_id' => 'required',  
       'unit' => 'required',
       'katashiki' => 'required',
       'suffix' => 'required',
     ]);
 
     $message = Unit::findOrFail($id);
+    $message->unit_model_id = $request->input('unit_model_id');
     $message->unit = $request->input('unit');
     $message->katashiki = $request->input('katashiki');
     $message->suffix = $request->input('suffix');

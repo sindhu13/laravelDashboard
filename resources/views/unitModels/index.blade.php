@@ -1,12 +1,12 @@
-{{-- \resources\views\vendors\index.blade.php --}}
+{{-- \resources\views\unitModels\index.blade.php --}}
 @extends('layouts.app')
 
-@section('title', '| Vendors')
+@section('title', '| Unit Models')
 
 @section('content')
 
 <div class="col-lg-10 col-lg-offset-1">
-  <h1><i class="fa fa-users"></i> Vendors <a href="{{ route('vendors.create') }}" class="btn btn-default pull-right">Add Vendors</a></h1>
+  <h1><i class="fa fa-users"></i> Unit Models <a href="{{ route('unitModels.create') }}" class="btn btn-default pull-right">Add Unit Models</a></h1>
   <hr>
   <div class="table-responsive">
       <table class="table table-bordered table-striped">
@@ -14,7 +14,7 @@
           <thead>
               <tr>
                 <th>No</th>
-                <th>Vendor</th>
+                <th>Unit Model</th>
                 <th>Last Modified</th>
                 <th>Operations</th>
               </tr>
@@ -22,20 +22,17 @@
 
           <tbody>
               @php ($i = 0)
-              @foreach ($vendors as $vendor)
+              @foreach ($unitModels as $unitModel)
               @php ($i++)
               <tr>
                 <td>{{ $i }}</td>
-                <td>{{ $vendor->vendor }}</td>
-                <td>{{ date('d m Y', strtotime($vendor->created_at))}}</td>
+                <td>{{ $unitModel->name }}</td>
+                <td>{{ date('d m Y', strtotime($unitModel->created_at))}}</td>
                 <td>
-                
-                <a href="{{ route('vendors.edit', $vendor->id) }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
-                
-                {!! Form::open(['method' => 'DELETE', 'route' => ['vendors.destroy', $vendor->id], 'class' => 'delete' ]) !!}
-                
+                <a href="{{ route('unitModels.edit', $unitModel->id) }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
+
+                {!! Form::open(['method' => 'DELETE', 'route' => ['unitModels.destroy', $unitModel->id], 'class' => 'delete' ]) !!}
                 {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                
                 {!! Form::close() !!}
 
                 </td>
@@ -44,7 +41,7 @@
           </tbody>
       </table>
       <div class="text-center">
-          {!! $vendors->links() !!}
+          {!! $unitModels->links() !!}
       </div>
   </div>
 </div>

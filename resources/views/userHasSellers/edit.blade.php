@@ -10,9 +10,10 @@
 
     {{ Form::model($userHasSeller, array('route' => array('userHasSellers.update', $userHasSeller->id), 'method' => 'PUT')) }}
     {{Form::hidden('marketing_id', null)}}
+    {{Form::hidden('employee_id', null)}}
         <div class="form-group">
             {{Form::label('employee_id', 'Seller')}}
-            {{Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => 'Enter Seller'])}}
+            {{Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => 'Enter Seller', 'disabled' => 'disabled'])}}
         </div>
         <div class="form-group">
             {{Form::label('begin_work', 'Begin Work')}}

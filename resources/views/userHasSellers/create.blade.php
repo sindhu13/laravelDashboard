@@ -18,7 +18,7 @@
         {{Form::text('begin_work', '', ['class' => 'form-control', 'placeholder' => 'Enter Begin Work'])}}
       </div>
       {{Form::submit('Add', ['class' => 'btn btn-primary'])}}
-      <a class="btn btn-primary" href="{{ route('userHasSellers.index') }}">Cancel</a>
+      <a class="btn btn-primary" href="{{ url()->previous() }}">Cancel</a>
       {!! Form:: close() !!}
     </div>
 </div>

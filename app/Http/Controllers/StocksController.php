@@ -12,6 +12,7 @@ use App\Position;
 use App\Seller;
 use App\Leasing;
 use App\Stock;
+use App\Status;
 use Auth;
 use Session;
 
@@ -39,15 +40,16 @@ class StocksController extends Controller
     //$stocks = DB::table('stocks')->paginate(50);
     $stocks = DB::table('stocks')
     ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix', 'colors.color', 'colors.code', 'positions.position', 'alocations.position AS aloc', 'employees.name', 'leasings.leasing')
-    ->join('locations', 'locations.id', '=', 'stocks.location_id')
-    ->join('vendors', 'vendors.id', '=', 'stocks.vendor_id')
-    ->join('units', 'units.id', '=', 'stocks.unit_id')
-    ->join('colors', 'colors.id', '=', 'stocks.color_id')
-    ->join('positions', 'positions.id', '=', 'stocks.position_id')
-    ->join('positions as alocations', 'alocations.id', '=', 'stocks.alocation_id')
-    ->join('user_has_sellers', 'user_has_sellers.id', '=', 'stocks.seller_id')
-    ->join('employees', 'employees.id', '=', 'user_has_sellers.employee_id')
-    ->join('leasings', 'leasings.id', '=', 'stocks.leasing_id')
+    ->leftjoin('locations', 'locations.id', '=', 'stocks.location_id')
+    ->leftjoin('vendors', 'vendors.id', '=', 'stocks.vendor_id')
+    ->leftjoin('units', 'units.id', '=', 'stocks.unit_id')
+    ->leftjoin('colors', 'colors.id', '=', 'stocks.color_id')
+    ->leftjoin('positions', 'positions.id', '=', 'stocks.position_id')
+    ->leftjoin('positions as alocations', 'alocations.id', '=', 'stocks.alocation_id')
+    ->leftjoin('user_has_sellers', 'user_has_sellers.id', '=', 'stocks.seller_id')
+    ->leftjoin('employees', 'employees.id', '=', 'user_has_sellers.employee_id')
+    ->leftjoin('leasings', 'leasings.id', '=', 'stocks.leasing_id')
+    ->where('stocks.last_status_id', '<>', 4)->where('stocks.last_status_id', '<>', 3)
     ->paginate(50);
     
     //$locations = DB::table('stocks')
@@ -93,6 +95,8 @@ class StocksController extends Controller
       $message->seller_id = $request->input('seller_id');
       $message->consumer = $request->input('consumer');
       $message->leasing_id = $request->input('leasing_id');
+      $message->status_id = $request->input('status_id');
+      $message->last_status_id = $request->input('status_id');
 
       $message->save();
 
@@ -108,6 +112,7 @@ class StocksController extends Controller
     $units = Unit::all();
     $colors = Color::all();
     $positions = Position::pluck('position', 'id');
+    $status = Status::where('id', 1)->orwhere('id', 2)->pluck('name', 'id');
     $leasings = Leasing::pluck('leasing', 'id');
     $marketings = DB::table('marketing_groups')
         ->select('marketing_groups.*', 'employees.name')
@@ -120,7 +125,8 @@ class StocksController extends Controller
         ->join('employees AS supervisors', 'supervisors.id', '=', 'marketing_groups.spv_id')
         ->get();
     
-    return view('stocks.create', compact('locations', 'vendors', 'units', 'colors', 'positions', 'userHasSellers', 'marketings', 'leasings'));
+    return view('stocks.create', compact('locations', 'vendors', 'units', 'colors', 'positions',
+                                         'userHasSellers', 'marketings', 'leasings', 'status'));
   }
 
   public function show($id) {
@@ -136,6 +142,7 @@ class StocksController extends Controller
     $colors = Color::all();
     $positions = Position::pluck('position', 'id');
     $alocations = Position::pluck('position', 'id');
+    $status = Status::where('id', 3)->orwhere('id', 4)->pluck('name', 'id');
     $marketings = DB::table('marketing_groups')
         ->select('marketing_groups.*', 'employees.name')
         ->join('employees', 'employees.id', '=', 'marketing_groups.spv_id')
@@ -147,14 +154,14 @@ class StocksController extends Controller
         ->join('employees AS supervisors', 'supervisors.id', '=', 'marketing_groups.spv_id')
         ->get();
     $leasings = Leasing::pluck('leasing', 'id');
-    return view('stocks.edit', compact('stock', 'locations', 'vendors', 'units', 'colors', 'positions', 'alocations', 'userHasSellers', 'marketings', 'leasings'));
+    return view('stocks.edit', compact('stock', 'locations', 'vendors', 'units', 'colors',
+                                       'positions', 'alocations', 'userHasSellers',
+                                       'marketings', 'leasings', 'status'));
   }
 
   public function update(Request $request, $id) {
     $this->validate($request, [
-        'po_number' => 'required',
         'po_date' => 'required',
-        'po_csi' => 'required'
     ]);
 
         $message = Stock::findOrFail($id);
@@ -175,6 +182,10 @@ class StocksController extends Controller
         $message->seller_id = $request->input('seller_id');
         $message->consumer = $request->input('consumer');
         $message->leasing_id = $request->input('leasing_id');
+        if($request->input('last_status_id') != ''){
+            $message->last_status_id = $request->input('last_status_id');
+            $message->status_date = $request->input('status_date');
+        }        
 
         $message->save();
 
@@ -186,6 +197,25 @@ class StocksController extends Controller
     $stock->delete();
 
     return redirect()->route('stocks.index')->with('flash_message', 'Stock successfully deleted');
+  }
+  
+  public function dos()
+  {
+    $stocks = DB::table('stocks')
+    ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix', 'colors.color', 'colors.code', 'positions.position', 'alocations.position AS aloc', 'employees.name', 'leasings.leasing')
+    ->leftjoin('locations', 'locations.id', '=', 'stocks.location_id')
+    ->leftjoin('vendors', 'vendors.id', '=', 'stocks.vendor_id')
+    ->leftjoin('units', 'units.id', '=', 'stocks.unit_id')
+    ->leftjoin('colors', 'colors.id', '=', 'stocks.color_id')
+    ->leftjoin('positions', 'positions.id', '=', 'stocks.position_id')
+    ->leftjoin('positions as alocations', 'alocations.id', '=', 'stocks.alocation_id')
+    ->leftjoin('user_has_sellers', 'user_has_sellers.id', '=', 'stocks.seller_id')
+    ->leftjoin('employees', 'employees.id', '=', 'user_has_sellers.employee_id')
+    ->leftjoin('leasings', 'leasings.id', '=', 'stocks.leasing_id')
+    ->where('stocks.last_status_id', '=', 4)
+    ->paginate(50);
+    
+    return view('stocks.dos', ['stocks' => $stocks]);
   }
 
 }
