@@ -119,6 +119,18 @@
         {{Form::label('status_date', 'Status Date')}}
         {{Form::text('status_date', '', ['class' => 'form-control', 'placeholder' => 'Enter Status Date'])}}
       </div>
+    <div class="form-group">
+        {{Form::label('last_pos', 'Posisi Terkahir')}}
+        {{Form::text('last_pos', '', ['class' => 'form-control', 'placeholder' => 'Enter Status Date'])}}
+      </div>
+    <div class="form-group">
+        {{Form::label('last_pos_ho_less', 'Posisi Akhir HO')}}
+        {{Form::text('last_pos_ho_less', '', ['class' => 'form-control', 'placeholder' => 'Enter Posisi Akhir HO'])}}
+      </div>
+    <div class="form-group">
+        {{Form::label('last_pos_ho_greater', 'Posisi Akhir HO')}}
+        {{Form::text('last_pos_ho_greater', '', ['class' => 'form-control', 'placeholder' => 'Enter Posisi Akhir HO'])}}
+      </div>
     {{ Form::submit('Save', array('class' => 'btn btn-primary')) }}
     {{ Form::close() }}
   </div>
