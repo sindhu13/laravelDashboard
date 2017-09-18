@@ -39,7 +39,9 @@ class StocksController extends Controller
     //First methode
     //$stocks = DB::table('stocks')->paginate(50);
     $stocks = DB::table('stocks')
-    ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix', 'colors.color', 'colors.code', 'positions.position', 'alocations.position AS aloc', 'employees.name', 'leasings.leasing')
+    ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix', 'colors.color',
+             'colors.code', 'positions.position', 'alocations.position AS aloc',
+             'employees.name', 'leasings.leasing', 'statuses.name AS status')
     ->leftjoin('locations', 'locations.id', '=', 'stocks.location_id')
     ->leftjoin('vendors', 'vendors.id', '=', 'stocks.vendor_id')
     ->leftjoin('units', 'units.id', '=', 'stocks.unit_id')
@@ -49,8 +51,15 @@ class StocksController extends Controller
     ->leftjoin('user_has_sellers', 'user_has_sellers.id', '=', 'stocks.seller_id')
     ->leftjoin('employees', 'employees.id', '=', 'user_has_sellers.employee_id')
     ->leftjoin('leasings', 'leasings.id', '=', 'stocks.leasing_id')
+    ->leftjoin('statuses', 'statuses.id', '=', 'stocks.status_id')
     ->where('stocks.last_status_id', '<>', 4)->where('stocks.last_status_id', '<>', 3)
-    ->paginate(50);
+    ->where(function ($query){
+        $search = \Request::get('search');
+        $query->where('stocks.chassis', 'like', '%'. $search .'%')
+            ->orwhere('stocks.consumer', 'like', '%'. $search .'%');
+        
+    })
+    ->paginate(200);
     
     //$locations = DB::table('stocks')
     //->select('locations.location')
@@ -74,7 +83,14 @@ class StocksController extends Controller
       $this->validate($request, [
         'po_number' => 'required',
         'po_date' => 'required',
-        'po_csi' => 'required'
+        'po_csi' => 'required',
+        'chassis' => 'required|unique:stocks',
+        'engine' => 'required|unique:stocks',
+        'unit_id' => 'required',
+        'color_id' => 'required',
+        'location_id' => 'required',
+        'vendor_id' => 'required',
+        'status_id' => 'required',
       ]);
 
       $message = new stock;
@@ -161,7 +177,13 @@ class StocksController extends Controller
 
   public function update(Request $request, $id) {
     $this->validate($request, [
+        'po_number' => 'required',
         'po_date' => 'required',
+        'po_csi' => 'required',
+        'unit_id' => 'required',
+        'color_id' => 'required',
+        'location_id' => 'required',
+        'vendor_id' => 'required',
     ]);
 
         $message = Stock::findOrFail($id);
@@ -182,6 +204,9 @@ class StocksController extends Controller
         $message->seller_id = $request->input('seller_id');
         $message->consumer = $request->input('consumer');
         $message->leasing_id = $request->input('leasing_id');
+        $message->last_pos = $request->input('last_pos');
+        $message->last_pos_ho_less = $request->input('last_pos_ho_less');
+        $message->last_pos_ho_greater = $request->input('last_pos_ho_greater');
         if($request->input('last_status_id') != ''){
             $message->last_status_id = $request->input('last_status_id');
             $message->status_date = $request->input('status_date');
@@ -201,6 +226,7 @@ class StocksController extends Controller
   
   public function dos()
   {
+    //$search = \Request::get('search');
     $stocks = DB::table('stocks')
     ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix', 'colors.color', 'colors.code', 'positions.position', 'alocations.position AS aloc', 'employees.name', 'leasings.leasing')
     ->leftjoin('locations', 'locations.id', '=', 'stocks.location_id')
@@ -213,6 +239,20 @@ class StocksController extends Controller
     ->leftjoin('employees', 'employees.id', '=', 'user_has_sellers.employee_id')
     ->leftjoin('leasings', 'leasings.id', '=', 'stocks.leasing_id')
     ->where('stocks.last_status_id', '=', 4)
+    ->where(function ($query){
+        $search = \Request::get('search');
+        $month = \Request::get('monthsearch');
+        if(isset($search)){
+            $query->where('stocks.chassis', 'like', '%'. $search .'%')
+                ->orwhere('stocks.consumer', 'like', '%'. $search .'%');
+        }elseif(isset($month)){
+            $query->whereMonth('stocks.status_date', '=', $month);
+        }else{
+            $n = \Carbon\Carbon::now();
+            $query->whereMonth('stocks.status_date', '=', $n->month);
+        }
+        
+    })
     ->paginate(50);
     
     return view('stocks.dos', ['stocks' => $stocks]);

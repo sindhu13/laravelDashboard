@@ -19,13 +19,9 @@
 //});
 Route::get('/', 'HomeController@home');
 Route::get('/home', 'HomeController@home');
-Route::get('/homeIframe', 'HomeController@homeIframe');
 Route::get('/do/', 'HomeController@homeDo');
-Route::get('/doIframe/', 'HomeController@doIframe');
 Route::get('/supply/', 'HomeController@homeSupply');
-Route::get('/supplyIframe/', 'HomeController@supplyIframe');
 Route::get('/barter/', 'HomeController@homeBarter');
-Route::get('/barterIframe/', 'HomeController@barterIframe');
 
 //Route::get('/stocks/dos', 'StocksController@dos');
 Route::get('/stocks/dos', ['as' => 'stocks.dos', 'uses' => 'StocksController@dos']);
