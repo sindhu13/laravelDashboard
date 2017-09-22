@@ -9,12 +9,12 @@
 <div class="col-lg-10 col-lg-offset-1">
 @include('search', ['url' => 'stocks/dos', 'link' => 'stocks/dos'])
   <h1><i class="fa fa-users"></i> Stocks DO </h1>
-  
+
   <hr>
   <div class="" style ="height: 450px; overflow-y: scroll;">
     <div class="">
         <table class="table table-bordered table-striped">
-  
+
             <thead>
                 <tr>
                   <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 50px">No</th>
@@ -35,14 +35,14 @@
                   <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 100px">DO Date</th>
                 </tr>
                 <tr>
-                  <th style="text-align:center; vertical-align:middle; min-width: 200px">No</th>
+                  <th style="text-align:center; vertical-align:middle; min-width: 200px">RRN</th>
                   <th style="text-align:center; vertical-align:middle; min-width: 100px">Date</th>
                   <th style="text-align:center; vertical-align:middle;">CSI</th>
                   <th style="text-align:center; vertical-align:middle;">Hari</th>
                   <th style="text-align:center; vertical-align:middle; min-width: 100px">Tanggal</th>
                 </tr>
             </thead>
-  
+
             <tbody>
                 @php ($i = 0)
                 @foreach ($stocks as $stock)

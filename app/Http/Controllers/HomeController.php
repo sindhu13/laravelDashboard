@@ -34,6 +34,7 @@ class HomeController extends Controller
    */
   public function home()
   {
+    $n = \Carbon\Carbon::now();
     $stocks = DB::table('stocks')
     ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix',
              'colors.color', 'colors.code', 'positions.position', 'alocations.position AS aloc',
@@ -54,21 +55,47 @@ class HomeController extends Controller
         $search = \Request::get('search');
         $query->where('stocks.chassis', 'like', '%'. $search .'%')
             ->orwhere('stocks.consumer', 'like', '%'. $search .'%');
-        
+
     })
     ->paginate(200);
-    $n = \Carbon\Carbon::now();
-    $tst = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->where('last_status_id', '<>', 4)->where('stocks.last_status_id', '<>', 3)->pluck('tot');
-    $tsp = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->whereMonth('stocks.po_date', '=', $n->month)->where('status_id', 1)->pluck('tot');
-    $tsdo = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->whereMonth('stocks.status_date', '=', $n->month)->where('last_status_id', 4)->pluck('tot');
-    $tsdou = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->whereMonth('stocks.status_date', '=', $n->month)->where('last_status_id', 3)->pluck('tot');
-    
-    return view('/home', ['stocks' => $stocks, 'tst' => $tst, 'tsp' => $tsp, 'tsdo' => $tsdo, 'tsdou' => $tsdou]);
+
+    $tst = DB::table('stocks')->select(DB::raw('count(id) AS tot'))
+        ->where('last_status_id', '<>', 4)
+        ->where('stocks.last_status_id', '<>', 3)
+        ->pluck('tot');
+    $tsp = DB::table('stocks')->select(DB::raw('count(id) AS tot'))
+        ->whereMonth('stocks.po_date', '=', $n->month)
+        ->where('status_id', 1)
+        ->where(DB::raw('YEAR(stocks.po_date)'), '=', $n->year)
+        ->pluck('tot');
+    $tsdo = DB::table('stocks')->select(DB::raw('count(id) AS tot'))
+        ->whereMonth('stocks.status_date', '=', $n->month)
+        ->where('last_status_id', 4)
+        ->where(DB::raw('YEAR(stocks.status_date)'), '=', $n->year)
+        ->pluck('tot');
+    $tsdou = DB::table('stocks')->select(DB::raw('count(id) AS tot'))
+        ->whereMonth('stocks.status_date', '=', $n->month)
+        ->where('last_status_id', 3)
+        ->where(DB::raw('YEAR(stocks.status_date)'), '=', $n->year)
+        ->pluck('tot');
+
+    $marketings = DB::table('marketing_groups')->get();
+    $sales = DB::table('stocks')
+        ->select('marketing_groups.id', 'marketing_groups.name', DB::raw('YEAR(stocks.status_date) AS y'), DB::raw('MONTH(stocks.status_date) AS m'), DB::raw('COUNT(stocks.id) AS tot'))
+        ->join('user_has_sellers', 'user_has_sellers.id', 'stocks.seller_id')
+        ->join('marketing_groups', 'marketing_groups.id', 'user_has_sellers.marketing_id')
+        ->join('employees', 'employees.id', 'marketing_groups.spv_id')
+        ->where('stocks.last_status_id', '=', 4)->where(DB::raw('YEAR(stocks.status_date)'), '=', $n->year)
+        ->groupBy(DB::raw('YEAR(stocks.status_date)'), DB::raw('MONTH(stocks.status_date)'), 'marketing_groups.id')
+        ->get();
+
+    return view('/home', ['stocks' => $stocks, 'tst' => $tst, 'tsp' => $tsp, 'tsdo' => $tsdo, 'tsdou' => $tsdou, 'marketings' => $marketings, 'sales' => $sales]);
 
   }
-  
+
   public function homeDo()
   {
+    $n = \Carbon\Carbon::now();
     $stocks = DB::table('stocks')
     ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix',
              'colors.color', 'colors.code', 'positions.position', 'alocations.position AS aloc',
@@ -84,7 +111,7 @@ class HomeController extends Controller
     ->leftjoin('leasings', 'leasings.id', '=', 'stocks.leasing_id')
     ->leftjoin('statuses', 'statuses.id', '=', 'stocks.status_id')
     ->leftjoin('statuses AS lstat', 'lstat.id', '=', 'stocks.last_status_id')
-    ->where('stocks.last_status_id', '=', 4)
+    ->where('stocks.last_status_id', '=', 4)->where(DB::raw('YEAR(stocks.status_date)'), '=', $n->year)
     ->where(function ($query){
         $search = \Request::get('search');
         $month = \Request::get('monthsearch');
@@ -99,15 +126,16 @@ class HomeController extends Controller
         }
     })
     ->paginate(200);
-    $n = \Carbon\Carbon::now();
-    $ts = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->whereMonth('stocks.status_date', '=', $n->month)->where('last_status_id', 4)->pluck('tot');
-    
+
+    $ts = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->where(DB::raw('YEAR(stocks.status_date)'), '=', $n->year)->whereMonth('stocks.status_date', '=', $n->month)->where('last_status_id', 4)->pluck('tot');
+
     return view('/do', ['stocks' => $stocks, 'ts' => $ts]);
 
   }
-  
+
   public function homeSupply()
   {
+    $n = \Carbon\Carbon::now();
     $stocks = DB::table('stocks')
     ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix',
              'colors.color', 'colors.code', 'positions.position', 'alocations.position AS aloc',
@@ -124,6 +152,7 @@ class HomeController extends Controller
     ->leftjoin('statuses', 'statuses.id', '=', 'stocks.status_id')
     ->leftjoin('statuses AS lstat', 'lstat.id', '=', 'stocks.last_status_id')
     ->where('stocks.status_id', '=', 1)
+    ->where(DB::raw('YEAR(stocks.po_date)'), '=', $n->year)
     ->where(function ($query){
         $search = \Request::get('search');
         $month = \Request::get('monthsearch');
@@ -138,15 +167,16 @@ class HomeController extends Controller
         }
     })
     ->paginate(200);
-    $n = \Carbon\Carbon::now();
-    $ts = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->whereMonth('stocks.po_date', '=', $n->month)->where('status_id', 1)->pluck('tot');
-    
+    $ts = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->where(DB::raw('YEAR(stocks.po_date)'), '=', $n->year)
+      ->whereMonth('stocks.po_date', '=', $n->month)->where('status_id', 1)->pluck('tot');
+
     return view('/supply', ['stocks' => $stocks, 'ts' => $ts]);
 
   }
-  
+
   public function homeBarter()
   {
+    $n = \Carbon\Carbon::now();
     $stocks = DB::table('stocks')
     ->select('stocks.*', 'locations.location', 'vendors.vendor', 'units.unit', 'units.suffix',
              'colors.color', 'colors.code', 'positions.position', 'alocations.position AS aloc',
@@ -163,6 +193,7 @@ class HomeController extends Controller
     ->leftjoin('statuses', 'statuses.id', '=', 'stocks.status_id')
     ->leftjoin('statuses AS lstat', 'lstat.id', '=', 'stocks.last_status_id')
     ->where('stocks.last_status_id', '=', 3)
+    ->where(DB::raw('YEAR(stocks.po_date)'), '=', $n->year)
     ->where(function ($query){
         $search = \Request::get('search');
         $month = \Request::get('monthsearch');
@@ -177,12 +208,13 @@ class HomeController extends Controller
         }
     })
     ->paginate(200);
-    $n = \Carbon\Carbon::now();
-    $ts = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->whereMonth('stocks.status_date', '=', $n->month)->where('last_status_id', 3)->pluck('tot');
-    
+
+    $ts = DB::table('stocks')->select(DB::raw('count(id) AS tot'))->where(DB::raw('YEAR(stocks.po_date)'), '=', $n->year)
+      ->whereMonth('stocks.status_date', '=', $n->month)->where('last_status_id', 3)->pluck('tot');
+
     return view('/barter', ['stocks' => $stocks, 'ts' => $ts]);
 
   }
-  
+
 
 }

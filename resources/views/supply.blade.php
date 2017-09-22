@@ -35,20 +35,15 @@
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 220px">Nama Sales</th>
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 220px">Nama Konsumen</th>
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 100px">Leasing</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Terakhir</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Akhir HO</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Akhir HO</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Status</th>
+                <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 100px">Age</th>
+                <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 150px">Status</th>
               </tr>
               <tr>
-                <th style="text-align:center; vertical-align:middle; min-width: 200px">No</th>
+                <th style="text-align:center; vertical-align:middle; min-width: 200px">RRN</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 100px">Date</th>
                 <th style="text-align:center; vertical-align:middle;">CSI</th>
                 <th style="text-align:center; vertical-align:middle;">Hari</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 100px">Tanggal</th>
-                <th style="text-align:center; vertical-align:middle;">5 Hari Kerja</th>
-                <th style="text-align:center; vertical-align:middle;">Tanggal Alokasi < 25</th>
-                <th style="text-align:center; vertical-align:middle;">Tanggal Alokasi >= 25</th>
               </tr>
           </thead>
 
@@ -75,9 +70,16 @@
                 <td>{{ $stock->name }}</td>
                 <td>{{ $stock->consumer }}</td>
                 <td>{{ $stock->leasing }}</td>
-                <td>{{ $stock->last_pos }}</td>
-                <td>{{ !isset($stock->last_pos_ho_less) ? '' : date('d m Y', strtotime($stock->last_pos_ho_less)) }}</td>
-                <td>{{ !isset($stock->last_pos_ho_greater) ? '' : date('d m Y', strtotime($stock->last_pos_ho_greater)) }}</td>
+
+                <?php
+                $days = 0;
+                if(isset($stock->po_date)){
+                  $days = (abs(ceil((strtotime($stock->po_date)-strtotime("now"))/86400))) + 1;
+                }
+                ?>
+
+                <td>{{ $days. ' day' }}</td>
+                
                 <td>{{ $stock->status }}</td>
               </tr>
               @endforeach

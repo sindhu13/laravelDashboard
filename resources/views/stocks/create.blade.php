@@ -9,8 +9,8 @@
     <div class="panel-body">
       {!! Form::open(array('url' => 'stocks')) !!}
       <div class="form-group">
-        {{Form::label('po_number', 'PO Number')}}
-        {{Form::text('po_number', '', ['class' => 'form-control', 'placeholder' => 'Enter PO Number'])}}
+        {{Form::label('po_number', 'PO Number/RRN')}}
+        {{Form::text('po_number', '', ['class' => 'form-control', 'placeholder' => 'Enter PO Number / RRN'])}}
       </div>
       <div class="form-group">
         {{Form::label('po_date', 'PO Date')}}

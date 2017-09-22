@@ -40,7 +40,7 @@
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 150px">Status Akhir</th>
               </tr>
               <tr>
-                <th style="text-align:center; vertical-align:middle; min-width: 200px">No</th>
+                <th style="text-align:center; vertical-align:middle; min-width: 200px">RRN</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 100px">Date</th>
                 <th style="text-align:center; vertical-align:middle;">CSI</th>
                 <th style="text-align:center; vertical-align:middle;">Hari</th>
