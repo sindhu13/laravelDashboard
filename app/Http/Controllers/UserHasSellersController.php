@@ -55,7 +55,7 @@ class UserHasSellersController extends Controller
     }
 
     public function create($id){
-        $employees = Employee::where('position', 'Sales')->pluck('name', 'id');
+        $employees = Employee::where('position', 'Sales')->orderBy('name')->pluck('name', 'id');
         return view('userHasSellers.create', compact('employees', 'id'));
     }
 
@@ -80,7 +80,7 @@ class UserHasSellersController extends Controller
 
     public function edit($id) {
       $userHasSeller = UserHasSeller::findOrFail($id);
-      $employees = Employee::where('position', 'Sales')->pluck('name', 'id');
+      $employees = Employee::where('position', 'Sales')->orderBy('name')->pluck('name', 'id');
       return view('userHasSellers.edit', compact('userHasSeller', 'employees'));
     }
 

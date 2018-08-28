@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\User;
+use App\Employe;
+use App\MarketingGroup;
 use Auth;
 
 //Importing laravel-permission models
@@ -39,7 +42,14 @@ class UserController extends Controller {
     public function create() {
     //Get all roles and pass it to the view
         $roles = Role::get();
-        return view('users.create', ['roles'=>$roles]);
+        $employees = DB::table('employees')
+        ->select('employees.id', 'employees.name', 'employees.position')
+        ->where(DB::raw('employees.end_work'))
+        ->get();
+        $marketings = DB::table('marketing_groups')
+            ->select('marketing_groups.*')
+            ->get();
+        return view('users.create', compact('roles', 'employees', 'marketings'));
     }
 
     /**
@@ -53,10 +63,11 @@ class UserController extends Controller {
         $this->validate($request, [
             'name'=>'required|max:120',
             'email'=>'required|email|unique:users',
-            'password'=>'required|min:6|confirmed'
+            'password'=>'required|min:6|confirmed',
+            'employee_id' => 'required|unique:users'
         ]);
 
-        $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
+        $user = User::create($request->only('email', 'name', 'password', 'employee_id', 'marketing_id')); //Retrieving only the email and password data
 
         $roles = $request['roles']; //Retrieving the roles field
     //Checking if a role was selected
@@ -90,10 +101,17 @@ class UserController extends Controller {
     * @return \Illuminate\Http\Response
     */
     public function edit($id) {
+        $employees = DB::table('employees')
+          ->select('employees.id', 'employees.name', 'employees.position')
+          ->where(DB::raw('employees.end_work'))
+          ->get();
+        $marketings = DB::table('marketing_groups')
+          ->select('marketing_groups.*')
+          ->get();
         $user = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
 
-        return view('users.edit', compact('user', 'roles')); //pass user and roles data to view
+        return view('users.edit', compact('user', 'roles', 'employees', 'marketings')); //pass user and roles data to view
 
     }
 
@@ -111,9 +129,10 @@ class UserController extends Controller {
         $this->validate($request, [
             'name'=>'required|max:120',
             'email'=>'required|email|unique:users,email,'.$id,
-            'password'=>'required|min:6|confirmed'
+            'password'=>'required|min:6|confirmed',
+            'employee_id'=>'required|unique:users,employee_id,'.$id,
         ]);
-        $input = $request->only(['name', 'email', 'password']); //Retreive the name, email and password fields
+        $input = $request->only(['name', 'email', 'password', 'employee_id', 'marketing_id']); //Retreive the name, email and password fields
         $roles = $request['roles']; //Retreive all roles
         $user->fill($input)->save();
 

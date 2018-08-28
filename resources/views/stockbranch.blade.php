@@ -1,17 +1,20 @@
-{{-- \resources\views\stocks\index.blade.php --}}
-@extends('layouts.appIframe')
+@extends('layouts.app')
 
 @section('title', '| HOME')
 
 @section('content')
-{{-- dd($ts) --}}
 
-<div class="">
-  <div class="">
-      <table class="table table-bordered table-striped">
-
+<div class="col-lg-10 col-lg-offset-1">
+  <h1><i class="fa fa-users"></i> Stock Soreang</h1>
+  {!! Form::open(['method' => 'get', 'url' => '/stockbranch', 'class' => 'navbar-form navbar-right', 'role' => 'search']) !!}
+  {{ Form::text('search', '', ['class' => 'form-control', 'placeholder' => 'Search...']) }}
+  {{ Form::submit('Search', array('class' => 'btn btn-primary')) }}
+  {!! Form:: close() !!}</br></br></br>
+  <div class="" style ="height: 550px; overflow-y: scroll;">
+    <div class="">
+      <table class="table table-bordered table-striped" style="background-color: #f2f2f2;">
           <thead>
-              <tr>
+              <tr style="background-color: #e6e6e6;">
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 50px">No</th>
                 <th colspan="3" style="text-align:center; vertical-align:middle;">Purchase Invoice</th>
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 200px">Lokasi Fisik</th>
@@ -27,20 +30,15 @@
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 220px">Nama Sales</th>
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 220px">Nama Konsumen</th>
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 100px">Leasing</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Terakhir</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Akhir HO</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Akhir HO</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Status</th>
+                <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 100px">Age</th>
+                <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 150px">Status</th>
               </tr>
-              <tr>
-                <th style="text-align:center; vertical-align:middle; min-width: 200px">No</th>
+              <tr style="background-color: #e6e6e6;">
+                <th style="text-align:center; vertical-align:middle; min-width: 200px">RRN</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 100px">Date</th>
                 <th style="text-align:center; vertical-align:middle;">CSI</th>
                 <th style="text-align:center; vertical-align:middle;">Hari</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 100px">Tanggal</th>
-                <th style="text-align:center; vertical-align:middle;">5 Hari Kerja</th>
-                <th style="text-align:center; vertical-align:middle;">Tanggal Alokasi < 25</th>
-                <th style="text-align:center; vertical-align:middle;">Tanggal Alokasi >= 25</th>
               </tr>
           </thead>
 
@@ -51,7 +49,7 @@
               <tr>
                 <td>{{ $i }}</td>
                 <td>{{ $stock->po_number }}</td>
-                <td>{{ date('d m Y', strtotime($stock->created_at))}}</td>
+                <td>{{ date('d m Y', strtotime($stock->po_date))}}</td>
                 <td>{{ $stock->po_csi }}</td>
                 <td>{{ $stock->location }}</td>
                 <td>{{ $stock->vendor }}</td>
@@ -67,9 +65,15 @@
                 <td>{{ $stock->name }}</td>
                 <td>{{ $stock->consumer }}</td>
                 <td>{{ $stock->leasing }}</td>
-                <td>{{ $stock->last_pos }}</td>
-                <td>{{ !isset($stock->last_pos_ho_less) ? '' : date('d m Y', strtotime($stock->last_pos_ho_less)) }}</td>
-                <td>{{ !isset($stock->last_pos_ho_greater) ? '' : date('d m Y', strtotime($stock->last_pos_ho_greater)) }}</td>
+
+                <?php
+                $days = 0;
+                if(isset($stock->po_date)){
+                  $days = (abs(ceil((strtotime($stock->po_date)-strtotime("now"))/86400))) + 1;
+                }
+                ?>
+
+                <td>{{ $days. ' day' }}</td>
                 <td>{{ $stock->status }}</td>
               </tr>
               @endforeach
@@ -78,7 +82,10 @@
       <div class="text-center">
           {!! $stocks->links() !!}
       </div>
+    </div>
   </div>
+  </br>
+
+
 </div>
-{{--dd($ts)--}}
 @endsection

@@ -1,13 +1,16 @@
 {{-- \resources\views\stocks\index.blade.php --}}
-@extends('layouts.appIframe')
+@extends('layouts.app')
 
 @section('title', '| HOME')
 
 @section('content')
-{{-- dd($ts) --}}
+{{-- dd($stocks) --}}
 
-<div class="">
-  <div class="">
+<div class="col-lg-10 col-lg-offset-1">
+  <h1><i class="fa fa-users"></i> {{ $stocks[0]->name }} <a href="{{ url()->previous() }}" class="btn btn-default pull-right">Back</a></h1>
+  <hr>
+  <div class="" style ="height: 450px; overflow-y: scroll;">
+    <div class="">
       <table class="table table-bordered table-striped">
 
           <thead>
@@ -27,20 +30,16 @@
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 220px">Nama Sales</th>
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 220px">Nama Konsumen</th>
                 <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 100px">Leasing</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Terakhir</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Akhir HO</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Posisi Akhir HO</th>
-                <th style="text-align:center; vertical-align:middle; min-width: 150px">Status</th>
+                <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 100px">DO Date</th>
+                <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 150px">Status Awal</th>
+                <th rowspan="2" style="text-align:center; vertical-align:middle; min-width: 150px">Status Akhir</th>
               </tr>
               <tr>
-                <th style="text-align:center; vertical-align:middle; min-width: 200px">No</th>
+                <th style="text-align:center; vertical-align:middle; min-width: 200px">RRN</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 100px">Date</th>
                 <th style="text-align:center; vertical-align:middle;">CSI</th>
                 <th style="text-align:center; vertical-align:middle;">Hari</th>
                 <th style="text-align:center; vertical-align:middle; min-width: 100px">Tanggal</th>
-                <th style="text-align:center; vertical-align:middle;">5 Hari Kerja</th>
-                <th style="text-align:center; vertical-align:middle;">Tanggal Alokasi < 25</th>
-                <th style="text-align:center; vertical-align:middle;">Tanggal Alokasi >= 25</th>
               </tr>
           </thead>
 
@@ -51,7 +50,7 @@
               <tr>
                 <td>{{ $i }}</td>
                 <td>{{ $stock->po_number }}</td>
-                <td>{{ date('d m Y', strtotime($stock->created_at))}}</td>
+                <td>{{ date('d m Y', strtotime($stock->po_date))}}</td>
                 <td>{{ $stock->po_csi }}</td>
                 <td>{{ $stock->location }}</td>
                 <td>{{ $stock->vendor }}</td>
@@ -67,17 +66,14 @@
                 <td>{{ $stock->name }}</td>
                 <td>{{ $stock->consumer }}</td>
                 <td>{{ $stock->leasing }}</td>
-                <td>{{ $stock->last_pos }}</td>
-                <td>{{ !isset($stock->last_pos_ho_less) ? '' : date('d m Y', strtotime($stock->last_pos_ho_less)) }}</td>
-                <td>{{ !isset($stock->last_pos_ho_greater) ? '' : date('d m Y', strtotime($stock->last_pos_ho_greater)) }}</td>
+                <td>{{ !isset($stock->status_date) ? '' : date('d m Y', strtotime($stock->status_date)) }}</td>
                 <td>{{ $stock->status }}</td>
+                <td>{{ $stock->lstat }}</td>
               </tr>
               @endforeach
           </tbody>
       </table>
-      <div class="text-center">
-          {!! $stocks->links() !!}
-      </div>
+    </div>
   </div>
 </div>
 {{--dd($ts)--}}

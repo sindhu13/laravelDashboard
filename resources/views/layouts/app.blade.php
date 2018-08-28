@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
@@ -82,7 +83,7 @@
                           <li {{ (Request::is("positions") ? 'class=active' : '') }} ><a href="{{route('positions.index')}}">Positions</a></li>
                           <li {{ (Request::is("loactions") ? 'class=active' : '') }} ><a href="{{route('locations.index')}}">Locations</a></li>
                           <li {{ (Request::is("vendors") ? 'class=active' : '') }} ><a href="{{route('vendors.index')}}">Vendors</a></li>
-                          
+
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 Units <span class="caret"></span>
@@ -94,9 +95,9 @@
                               <li {{ (Request::is("colors") ? 'class=active' : '') }} ><a href="{{route('colors.index')}}">Colors</a></li>
                             </ul>
                           </li>
-                          
+
                           <li {{ (Request::is("leasing") ? 'class=active' : '') }} ><a href="{{route('leasings.index')}}">Leasings</a></li>
-                          
+
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 Employees <span class="caret"></span>
@@ -107,7 +108,7 @@
                                 <li {{ (Request::is("marketingGroups") ? 'class=active' : '') }} ><a href="{{route('marketingGroups.index')}}">Marketing Group</a></li>
                             </ul>
                           </li>
-                          
+
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 Stocks <span class="caret"></span>
@@ -118,8 +119,106 @@
                                 <li><a href="{{route('stocks.dos')}}"><i class="fa fa-btn fa-unlock"></i>DO</a></li>
                             </ul>
                           </li>
-                          
+
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Sales <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{url('salesperformance')}}"><i class="fa fa-btn fa-unlock"></i>Sales Performance</a></li>
+                                <li><a href="{{url('salespermodel')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Model</a></li>
+                                <li><a href="{{url('salespercolor')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Color</a></li>
+                                <li><a href="{{url('salesperleasing')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Leasing</a></li>
+                            </ul>
+                          </li>
                           @endrole
+
+                          @role('Editor')
+                          <li {{ (Request::is("positions") ? 'class=active' : '') }} ><a href="{{route('positions.index')}}">Positions</a></li>
+                          <li {{ (Request::is("loactions") ? 'class=active' : '') }} ><a href="{{route('locations.index')}}">Locations</a></li>
+                          <li {{ (Request::is("vendors") ? 'class=active' : '') }} ><a href="{{route('vendors.index')}}">Vendors</a></li>
+
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Units <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                              <li {{ (Request::is("unitModels") ? 'class=active' : '') }} ><a href="{{route('unitModels.index')}}">Unit Models</a></li>
+                              <li {{ (Request::is("units") ? 'class=active' : '') }} ><a href="{{route('units.index')}}">Units</a></li>
+                              <li {{ (Request::is("colors") ? 'class=active' : '') }} ><a href="{{route('colors.index')}}">Colors</a></li>
+                            </ul>
+                          </li>
+
+                          <li {{ (Request::is("leasing") ? 'class=active' : '') }} ><a href="{{route('leasings.index')}}">Leasings</a></li>
+
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Employees <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li {{ (Request::is("employee") ? 'class=active' : '') }} ><a href="{{route('employees.index')}}">Employees</a></li>
+                                <li {{ (Request::is("marketingGroups") ? 'class=active' : '') }} ><a href="{{route('marketingGroups.index')}}">Marketing Group</a></li>
+                            </ul>
+                          </li>
+
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Stocks <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{route('stocks.index')}}"><i class="fa fa-btn fa-unlock"></i>Stock</a></li>
+                                <li><a href="{{route('stocks.dos')}}"><i class="fa fa-btn fa-unlock"></i>DO</a></li>
+                            </ul>
+                          </li>
+
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Sales <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{url('salesperformance')}}"><i class="fa fa-btn fa-unlock"></i>Sales Performance</a></li>
+                                <li><a href="{{url('salespermodel')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Model</a></li>
+                                <li><a href="{{url('salespercolor')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Color</a></li>
+                                <li><a href="{{url('salesperleasing')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Leasing</a></li>
+                            </ul>
+                          </li>
+                          @endrole {{-- End Editor Role --}}
+
+                          @role('Director')
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Sales <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{url('salesperformance')}}"><i class="fa fa-btn fa-unlock"></i>Sales Performance</a></li>
+                                <li><a href="{{url('salespermodel')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Model</a></li>
+                                <li><a href="{{url('salespercolor')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Color</a></li>
+                                <li><a href="{{url('salesperleasing')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Leasing</a></li>
+                            </ul>
+                          </li>
+                          @endrole {{-- End Director Role --}}
+
+                          @role('Branch Manager')
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Sales <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{url('salesperformance')}}"><i class="fa fa-btn fa-unlock"></i>Sales Performance</a></li>
+                                <li><a href="{{url('salespermodel')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Model</a></li>
+                                <li><a href="{{url('salespercolor')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Color</a></li>
+                                <li><a href="{{url('salesperleasing')}}"><i class="fa fa-btn fa-unlock"></i>Sales Per Leasing</a></li>
+                            </ul>
+                          </li>
+                          @endrole {{-- End Branch Manager Role --}}
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -129,7 +228,7 @@
                                     <li>
                                       @role('Admin') {{-- Laravel-permission blade helper --}}
                                         <a href="#"><i class="fa fa-btn fa-unlock"></i>Admin</a>
-                                      
+
                                       <a href="{{ route ('users.index')}}"><i class="fa fa-btn fa-unlock"></i>Users</a>
                                         @endrole
                                         <a href="{{ route('logout') }}"

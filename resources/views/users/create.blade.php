@@ -23,6 +23,26 @@
         {{ Form::email('email', '', array('class' => 'form-control')) }}
     </div>
 
+    <div class="form-group">
+      {{Form::label('employee_id', 'Employee Data')}}
+      <select name="employee_id" class="form-control">
+        <option selected="selected" disabled="disabled" hidden="hidden" value="">Enter Employee</option>
+        @foreach($employees as $employee)
+          <option value="{{ $employee->id }}" >{{ $employee->name .' - '. $employee->position}}</option>
+        @endforeach
+      </select>
+    </div>
+
+    <div class="form-group">
+      {{Form::label('marketing_id', 'Marketing Group / "IF SUPERVISOR"')}}
+      <select name="marketing_id" class="form-control">
+        <option selected="selected" value="">Enter Marketing Group</option>
+        @foreach($marketings as $marketing)
+          <option value="{{ $marketing->id }}" >{{ $marketing->name }}</option>
+        @endforeach
+      </select>
+    </div>
+
     <div class='form-group'>
         @foreach ($roles as $role)
             {{ Form::checkbox('roles[]',  $role->id ) }}

@@ -10,8 +10,8 @@
 
     {{ Form::model($stock, array('route' => array('stocks.update', $stock->id), 'method' => 'PUT')) }}
     <div class="form-group">
-        {{Form::label('po_number', 'PO Number')}}
-        {{Form::text('po_number', null, ['class' => 'form-control', 'placeholder' => 'Enter PO Number'])}}
+        {{Form::label('po_number', 'PO Number/RRN')}}
+        {{Form::text('po_number', null, ['class' => 'form-control', 'placeholder' => 'Enter PO Number / RRN'])}}
       </div>
       <div class="form-group">
         {{Form::label('po_date', 'PO Date')}}
@@ -30,7 +30,7 @@
         {{Form::select('vendor_id', $vendors, null, ['class' => 'form-control', 'placeholder' => 'Enter Vendor Name'])}}
       </div>
       <div class="form-group">
-        {{Form::label('unit_id', 'Unit Type')}}        
+        {{Form::label('unit_id', 'Unit Type')}}
         <select name="unit_id" class="form-control">
         <option selected="selected" disabled="disabled" hidden="hidden" value="">Enter Unit Type</option>
         @foreach($units as $unit)
@@ -88,6 +88,7 @@
         {{Form::label('seller_id', 'Seller')}}
         <select name="seller_id" class="form-control">
         <option selected="selected" disabled="disabled" hidden="hidden" value="">Enter Seller</option>
+        <option value="">None</option>
         @foreach($marketings as $marketing)
           <optgroup label="{{ $marketing->name}}">
             @foreach($userHasSellers as $userHasSeller)
@@ -109,7 +110,18 @@
       </div>
       <div class="form-group">
         {{Form::label('leasing_id', 'Leasing')}}
-        {{Form::select('leasing_id', $leasings, null, ['class' => 'form-control', 'placeholder' => 'Enter Leasing'])}}
+        <select name="leasing_id" class="form-control">
+          <option selected="selected" disabled="disabled" hidden="hidden" value="">Enter Leasing</option>
+          <option value="">None</option>
+          @foreach($leasings as $k => $v)
+            @php($selectleasing = '')
+            @if($stock->leasing_id == $k)
+              @php($selectleasing = 'selected')
+            @endif
+            <option value="{{ $k }}" {{ $selectleasing }}>{{ $v }}</option>
+          @endforeach
+        </select>
+        {{--Form::select('leasing_id', $leasings, null, ['class' => 'form-control', 'placeholder' => 'Enter Leasing'])--}}
       </div>
       <div class="form-group">
         {{Form::label('last_status_id', 'Status')}}
@@ -118,6 +130,18 @@
       <div class="form-group">
         {{Form::label('status_date', 'Status Date')}}
         {{Form::text('status_date', '', ['class' => 'form-control', 'placeholder' => 'Enter Status Date'])}}
+      </div>
+    <div class="form-group">
+        {{Form::label('last_pos', 'Posisi Terkahir')}}
+        {{Form::text('last_pos', '', ['class' => 'form-control', 'placeholder' => 'Enter Status Date'])}}
+      </div>
+    <div class="form-group">
+        {{Form::label('last_pos_ho_less', 'Posisi Akhir HO')}}
+        {{Form::text('last_pos_ho_less', '', ['class' => 'form-control', 'placeholder' => 'Enter Posisi Akhir HO'])}}
+      </div>
+    <div class="form-group">
+        {{Form::label('last_pos_ho_greater', 'Posisi Akhir HO')}}
+        {{Form::text('last_pos_ho_greater', '', ['class' => 'form-control', 'placeholder' => 'Enter Posisi Akhir HO'])}}
       </div>
     {{ Form::submit('Save', array('class' => 'btn btn-primary')) }}
     {{ Form::close() }}

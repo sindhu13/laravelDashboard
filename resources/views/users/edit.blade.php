@@ -23,6 +23,34 @@
         {{ Form::email('email', null, array('class' => 'form-control')) }}
     </div>
 
+    <div class="form-group">
+      {{Form::label('employee_id', 'Employee Data')}}
+      <select name="employee_id" class="form-control">
+        <option selected="selected" disabled="disabled" hidden="hidden" value="">Enter Employee</option>
+        @foreach($employees as $employee)
+          @php ($isselecte = '')
+          @if($employee->id == $user->employee_id)
+              @php ($isselecte = 'selected')
+          @endif
+          <option value="{{ $employee->id }}" {{ $isselecte }}>{{ $employee->name .' - '. $employee->position}}</option>
+        @endforeach
+      </select>
+    </div>
+
+    <div class="form-group">
+      {{Form::label('marketing_id', 'Marketing Group / "IF SUPERVISOR"')}}
+      <select name="marketing_id" class="form-control">
+        <option selected="selected" value="">Enter Marketing Group</option>
+        @foreach($marketings as $marketing)
+          @php ($isselecte = '')
+          @if($marketing->id == $user->marketing_id)
+              @php ($isselecte = 'selected')
+          @endif
+          <option value="{{ $marketing->id }}" {{ $isselecte }}>{{ $marketing->name }}</option>
+        @endforeach
+      </select>
+    </div>
+
     <h5><b>Give Role</b></h5>
 
     <div class='form-group'>
